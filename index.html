@@ -1,0 +1,158 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <link href='http://fonts.googleapis.com/css?family=Permanent+Marker' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:bold' rel='stylesheet' type='text/css'>
+    <style>
+      .clearfix:after {
+        visibility: hidden;
+        display: block;
+        font-size: 0;
+        content: " ";
+        clear: both;
+        height: 0;
+        }
+      .clearfix { display: inline-table; }
+      /* Hides from IE-mac \*/
+      * html .clearfix { height: 1%; }
+      .clearfix { display: block; }
+      /* End hide from IE-mac */
+
+      body { font-family:'Cabin Sketch'; }
+      .frame {
+        text-align:justify;
+        width:400px;
+        margin:30px auto 0px;
+        background:#EEE;
+        padding:30px 50px;
+        border-top:1px solid #DDD;
+        box-shadow:0px 10px 10px #555;
+      }
+      h1, h2, h3, h4 { margin:0; }
+      h1 {
+        font-size:70px;
+      }
+      h2 {
+        font-size:30px;
+      }
+      h3 {
+        font-size:25px;
+      }
+      h4 {
+        font-size:20px;
+      }
+      p {
+        margin-top:0;
+      }
+      .phone {
+        font-size:60px;
+        color:blue;
+        text-shadow:0px 0px 3px #888;
+      }
+      .divide {
+        border-top:3px solid #999;
+        padding-top:20px;
+        margin-top:20px;
+      }
+      .wrapper {
+        width:500px;
+        margin:auto;
+      }
+      .commands {
+        width:398px;
+        margin:auto;
+      }
+      dd {
+        margin:0;
+        text-align:left;
+      }
+      dt {
+        font-size:20px;
+        color:green;
+      }
+      dt, dd { padding:0 10px 10px; }
+      dl { margin-top:10px; }
+      ul {
+        margin:20px -30px -30px -30px;
+        padding:0;
+        float:left;
+        border-left:2px dashed #555;
+      }
+      ul li {
+        vertical-align:top;
+        height:140px;
+        border-right:2px dashed #555;
+        text-align:left;
+        width:97px;
+        float:left;
+        list-style-type:none;
+        background:#EEE;
+      }
+      ul li, .spacer {
+        box-shadow:0px 10px 10px #555;
+      }
+      ul li.ripped {
+        height:5px;
+      }
+      .spacer {
+        float:left;
+        width:50px;
+        height:140px;
+        background:#EEE;
+      }
+
+      footer {
+        width:500px;
+        font-family:arial;
+        margin:50px auto;
+        font-size:12px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="frame">
+      <header>
+        <h1>Texting Buds</h1>
+        <h2>Find a random texting buddy.</h2>
+      </header>
+      <div class="page">
+        <p>Good news, life isn't that important. Text w/ a random buddy. Standard texting rates apply, but you already knew that.</p>
+        <div class="divide"></div>
+        <h3>Send a text message to this number:</h3>
+        <h2 class="phone">630-599-8662</h2>
+        <p>And you'll be connected to someone who is looking for a random texting buddy just like you.</p>
+        <div class="divide"></div>
+        <h4>Use the commands below...</h4>
+      </div>
+    </div>
+    <div class="wrapper">
+      <div class="spacer"></div>
+      <ul class="commands">
+        <li>
+          <dl>
+            <dt>#start</dt>
+            <dd>Finds you a text bud</dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt>#stop</dt>
+            <dd>ends your current text bud</dd>
+          </dl>
+        </li>
+        <li>
+          <dl>
+            <dt>#help</dt>
+            <dd>Get this menu</dd>
+          </dl>
+        </li>
+        <li class="ripped"></li>
+      </ul>
+      <div class="spacer"></div>
+      <div class="clearfix"></div>
+    </div>
+    <footer>
+      Good time experiment by <a href="http://royhere.com">Roy Kolak</a>
+    </footer>
+  </body>
+</html>
