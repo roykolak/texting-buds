@@ -24,7 +24,7 @@ phone.setup(function() {
     var person = params.From;
     var body = params.Body;
 
-    if(body.match(/@start/)) {
+    if(body.match(/#start/)) {
       client.lrange('buddies', 0, -1, function(err, buddies) {
         if(buddies.length === 0) {
           sms(person, "I'm tracking down a random buddy for you, I'll let you know when I found one.");
@@ -34,15 +34,15 @@ phone.setup(function() {
             client.set(buddyKey(person), buddy);
             client.set(buddyKey(buddy), person);
             [person, buddy].forEach(function(number) {
-              sms(number, "Meet your new texting buddy! Start texting by replying to this message. Text @stop to end it.");
+              sms(number, "Meet your new texting buddy! Start texting by replying to this message. Text #stop to end it.");
             });
           });
         }
       });
-    } else if(body.match(/@stop/)) {
+    } else if(body.match(/#stop/)) {
       client.get(buddyKey(person), function(err, buddy) {
-        sms(person, "Sorry the buddy didn't work out :(. Want a new one? Text @start.");
-        sms(buddy, "Looks like your buddy wanted to stop chatting. Text @start for a new buddy.");
+        sms(person, "Sorry the buddy didn't work out :(. Want a new one? Text #start.");
+        sms(buddy, "Looks like your buddy wanted to stop chatting. Text #start for a new buddy.");
         [person, buddy].forEach(function(number) {
           client.del(buddyKey(number));
         });
@@ -50,7 +50,7 @@ phone.setup(function() {
     } else {
       client.get(buddyKey(person), function(err, buddy) {
         if(buddy === null) {
-          sms(person, "Text @start to get a random buddy.");
+          sms(person, "Text #start to get a random buddy.");
         } else {
           sms(buddy, body);
         }
