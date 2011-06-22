@@ -7,7 +7,7 @@ function message(number, body) {
 }
 
 describe('TextingBuds', function() {
-  var textingBuds, sender, store, number, stubbedQuery, pause;
+  var textingBuds, sender, store, number, stubbedQuery;
 
   beforeEach(function() {
     sender = new Sender({});
@@ -22,44 +22,31 @@ describe('TextingBuds', function() {
         callback(result);
       });
     };
-    pause = function(queryCount) {
-      waitsFor(function() {
-        return store.finishedQuery(queryCount);
-      }, 'query never finished', 2000);
-    };
   });
 
   describe('#route', function() {
     describe('When the person has 3 blocks', function() {
       beforeEach(function() {
-       store.setBlocks(number, 3, function(){});
+        stubbedQuery('getBlocks', 3);
       });
 
       it('sends the banned SMS to the person', function() {
         spyOn(textingBuds, 'banned');
         textingBuds.route(message(number, 'hello'));
-        pause();
-
-        runs(function() {
-          expect(textingBuds.banned).toHaveBeenCalledWith(number);
-        });
+        expect(textingBuds.banned).toHaveBeenCalledWith(number);
       });
     });
 
     describe('When the person has less than three blocks', function() {
       beforeEach(function() {
-        store.setBlocks(number, 1, function(){});
+        stubbedQuery('getBlocks', 1);
       });
 
       describe('When the message contains #help', function() {
         it('calls to help', function() {
           spyOn(textingBuds, 'help');
           textingBuds.route(message(number, '#help'));
-          pause();
-
-          runs(function() {
-            expect(textingBuds.help).toHaveBeenCalledWith(number);
-          });
+          expect(textingBuds.help).toHaveBeenCalledWith(number);
         });
       });
 
@@ -67,11 +54,7 @@ describe('TextingBuds', function() {
         it('calls to stop', function() {
           spyOn(textingBuds, 'stop');
           textingBuds.route(message(number, '#stop'));
-          pause();
-
-          runs(function() {
-            expect(textingBuds.stop).toHaveBeenCalledWith(number);
-          });
+          expect(textingBuds.stop).toHaveBeenCalledWith(number);
         });
       });
 
@@ -79,11 +62,7 @@ describe('TextingBuds', function() {
         it('calls to next', function() {
           spyOn(textingBuds, 'next');
           textingBuds.route(message(number, '#next'));
-          pause();
-
-          runs(function() {
-            expect(textingBuds.next).toHaveBeenCalledWith(number);
-          });
+          expect(textingBuds.next).toHaveBeenCalledWith(number);
         });
       });
 
@@ -91,11 +70,7 @@ describe('TextingBuds', function() {
         it('calls to block', function() {
           spyOn(textingBuds, 'block');
           textingBuds.route(message(number, '#block'));
-          pause();
-
-          runs(function() {
-            expect(textingBuds.block).toHaveBeenCalledWith(number);
-          });
+          expect(textingBuds.block).toHaveBeenCalledWith(number);
         });
       });
     });
@@ -103,55 +78,35 @@ describe('TextingBuds', function() {
 
   describe('#next', function() {
     beforeEach(function() {
+      spyOn(sender, 'rejectionSms');
       spyOn(sender, 'emptyQueueSms');
     });
 
-    describe('When the person does not have a buddy', function() {
-      beforeEach(function() {
-        store.unsetBuddies(number, null, function(){});
-        waits(100);
-      });
-
-      describe('When the buddy queue is empty', function() {
-        beforeEach(function() {
-          store.clearBuddyQueue(function(){});
-          waits(100);
-          store.resetQueryCount();
-        });
-
-        it('sends the empty queue SMS to the person', function() {
-          runs(function() {
-            console.log('start');
-            textingBuds.next(number);
-          });
-          pause(2);
-
-          runs(function() {
-            expect(sender.emptyQueueSms).toHaveBeenCalledWith(number);
-            console.log('end');
-          });
-        });
-      });
-    });
-
-    describe('When the person does have a buddy', function() {
+    describe('When the person has a buddy', function() {
       var buddy;
 
       beforeEach(function() {
         buddy = '222-333-4444';
-        store.setBuddies(number, buddy, function(){});
-        spyOn(sender, 'rejectionSms');
-        waits(100);
-        store.resetQueryCount();
+        stubbedQuery('getAssignedBuddy', buddy);
+        stubbedQuery('unsetBuddies', true);
+        stubbedQuery('getBuddiesWaiting', []);
       });
 
       it('sends the rejection SMS to their buddy', function() {
-        console.log('start');
         textingBuds.next(number);
-        pause(2);
-
         expect(sender.rejectionSms).toHaveBeenCalledWith(buddy);
-        console.log('end');
+      });
+    });
+
+    describe('When the buddy queue is empty', function() {
+      beforeEach(function() {
+        stubbedQuery('getAssignedBuddy', null);
+        stubbedQuery('getBuddiesWaiting', []);
+      });
+
+      it('sends the empty queue SMS to the person', function() {
+        textingBuds.next(number);
+        expect(sender.emptyQueueSms).toHaveBeenCalledWith(number);
       });
     });
   });
@@ -159,18 +114,13 @@ describe('TextingBuds', function() {
   describe('#block', function() {
     describe('When the person is not assigned to a buddy', function() {
       beforeEach(function() {
-        store.unsetBuddies(number, null, function(){});
-        waits(100);
+        spyOn(sender, 'unassignedBuddySms');
+        stubbedQuery('getAssignedBuddy', null);
       });
 
       it('sends the unassigned buddy SMS to the person', function() {
-        spyOn(sender, 'unassignedBuddySms');
         textingBuds.block(number);
-        pause();
-
-        runs(function() {
-          expect(sender.unassignedBuddySms).toHaveBeenCalledWith(number);
-        });
+        expect(sender.unassignedBuddySms).toHaveBeenCalledWith(number);
       });
     });
 
@@ -179,30 +129,20 @@ describe('TextingBuds', function() {
 
       beforeEach(function() {
         buddy = '444-333-222';
-        store.setBuddies(number, buddy, function(){});
-        console.log('buddies set');
         spyOn(sender, 'blockerSms');
         spyOn(sender, 'blockeeSms');
-        store.resetQueryCount();
+        stubbedQuery('getAssignedBuddy', buddy);
+        stubbedQuery('unsetBuddies', true);
       });
 
       it('sends the blocker SMS to the person', function() {
-        console.log('block');
         textingBuds.block(number);
-        pause(3);
-
-        runs(function() {
-          expect(sender.blockerSms).toHaveBeenCalledWith(number);
-        });
+        expect(sender.blockerSms).toHaveBeenCalledWith(number);
       });
 
       it('sends the blockee SMS to the buddy', function() {
         textingBuds.block(number);
-        pause(3);
-
-        runs(function() {
-          expect(sender.blockeeSms).toHaveBeenCalledWith(buddy);
-        });
+        expect(sender.blockeeSms).toHaveBeenCalledWith(buddy);
       });
     });
   });
@@ -226,18 +166,13 @@ describe('TextingBuds', function() {
   describe('#stop', function() {
     describe('When the person is not assigned to a buddy', function() {
       beforeEach(function() {
-        store.unsetBuddies(number, null, function(){});
-        waits(1000);
+        spyOn(sender, 'unassignedBuddySms');
+        stubbedQuery('getAssignedBuddy', null);
       });
 
       it('sends the unassigned buddy SMS to the person', function() {
-        spyOn(sender, 'unassignedBuddySms');
         textingBuds.stop(number);
-        pause();
-
-        runs(function() {
-          expect(sender.unassignedBuddySms).toHaveBeenCalledWith(number);
-        });
+        expect(sender.unassignedBuddySms).toHaveBeenCalledWith(number);
       });
     });
 
@@ -246,28 +181,20 @@ describe('TextingBuds', function() {
 
       beforeEach(function() {
         buddy = '333-222-3333';
-        store.setBuddies(number, buddy, function(){});
         spyOn(sender, 'rejectionSms');
         spyOn(sender, 'goodbyeSms');
-        store.resetQueryCount();
+        stubbedQuery('getAssignedBuddy', buddy);
+        stubbedQuery('unsetBuddies', true);
       });
 
       it('sends the goodbye SMS to the person', function() {
         textingBuds.stop(number);
-        pause(3);
-
-        runs(function() {
-          expect(sender.goodbyeSms).toHaveBeenCalledWith(number);
-        });
+        expect(sender.goodbyeSms).toHaveBeenCalledWith(number);
       });
 
       it('sends the rejection SMS to the person', function() {
         textingBuds.stop(number);
-        pause(3);
-
-        runs(function() {
-          expect(sender.rejectionSms).toHaveBeenCalledWith(buddy);
-        });
+        expect(sender.rejectionSms).toHaveBeenCalledWith(buddy);
       });
     });
   });
