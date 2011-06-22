@@ -1,0 +1,3 @@
+
+textingBuds = new TextingBuds();
+
