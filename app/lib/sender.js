@@ -1,43 +1,46 @@
-Sender = function(sms) {
+Sender = function(client) {
   return {
+    send: function(number, message) {
+      client.sendSms(number, message, null, function(){});
+    },
     bannedSms: function(number) {
-      sms(number, this.messages.banned);
+      this.send(number, this.messages.banned);
     },
 
     unassignedBuddySms: function(number) {
-      sms(number, this.messages.unassignedBuddy);
+      this.send(number, this.messages.unassignedBuddy);
     },
 
     waitingForBuddySms: function(number) {
-      sms(number, this.messages.waitingForBuddy);
+      this.send(number, this.messages.waitingForBuddy);
     },
 
     meetYourNewBuddySms: function(number) {
-      sms(number, this.messages.meetYourNewBuddy);
+      this.send(number, this.messages.meetYourNewBuddy);
     },
 
     helpSms: function(number) {
-      sms(number, this.messages.help);
+      this.send(number, this.messages.help);
     },
 
     rejectionSms: function(number) {
-      sms(number, this.messages.rejection);
+      this.send(number, this.messages.rejection);
     },
 
     goodbyeSms: function(number) {
-      sms(number, this.messages.goodbye);
+      this.send(number, this.messages.goodbye);
     },
 
     blockerSms: function(number) {
-      sms(number, this.messages.blocker);
+      this.send(number, this.messages.blocker);
     },
 
     blockeeSms: function(number) {
-      sms(number, this.messages.blockee);
+      this.send(number, this.messages.blockee);
     },
 
     emptyQueueSms: function(number) {
-      sms(number, this.messages.emptyQueue);
+      this.send(number, this.messages.emptyQueue);
     },
 
     messages: {

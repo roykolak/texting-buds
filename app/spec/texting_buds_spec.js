@@ -89,7 +89,9 @@ describe('TextingBuds', function() {
         buddy = '222-333-4444';
         stubbedQuery('getAssignedBuddy', buddy);
         stubbedQuery('unsetBuddies', true);
+        stubbedQuery('addBuddyWaiting', true);
         stubbedQuery('getBuddiesWaiting', []);
+        stubbedQuery('addBuddyToPastBuddies', true);
       });
 
       it('sends the rejection SMS to their buddy', function() {
@@ -102,11 +104,30 @@ describe('TextingBuds', function() {
       beforeEach(function() {
         stubbedQuery('getAssignedBuddy', null);
         stubbedQuery('getBuddiesWaiting', []);
+        stubbedQuery('addBuddyWaiting', true);
       });
 
       it('sends the empty queue SMS to the person', function() {
         textingBuds.next(number);
         expect(sender.emptyQueueSms).toHaveBeenCalledWith(number);
+      });
+    });
+
+    describe('When the buddy queue is not empty', function() {
+      var buddy = '333-444-2222';
+
+      beforeEach(function() {
+        spyOn(sender, 'meetYourNewBuddySms');
+        stubbedQuery('getAssignedBuddy', null);
+        stubbedQuery('getBuddiesWaiting', [buddy, '111-222-333']);
+        stubbedQuery('popBuddyWaiting', buddy);
+        stubbedQuery('setBuddies', true);
+      });
+
+      it('sends the meet your new buddy SMS to both parties', function() {
+        textingBuds.next(number);
+        expect(sender.meetYourNewBuddySms.argsForCall[0]).toEqual([number]);
+        expect(sender.meetYourNewBuddySms.argsForCall[1]).toEqual([buddy]);
       });
     });
   });
@@ -133,6 +154,7 @@ describe('TextingBuds', function() {
         spyOn(sender, 'blockeeSms');
         stubbedQuery('getAssignedBuddy', buddy);
         stubbedQuery('unsetBuddies', true);
+        stubbedQuery('addBuddyToPastBuddies', true);
       });
 
       it('sends the blocker SMS to the person', function() {
@@ -185,6 +207,7 @@ describe('TextingBuds', function() {
         spyOn(sender, 'goodbyeSms');
         stubbedQuery('getAssignedBuddy', buddy);
         stubbedQuery('unsetBuddies', true);
+        stubbedQuery('addBuddyToPastBuddies', true);
       });
 
       it('sends the goodbye SMS to the person', function() {

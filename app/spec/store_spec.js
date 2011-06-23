@@ -21,6 +21,10 @@ describe('Store', function() {
     it('returns the blocks key for the passed number', function() {
       expect(Store.blocksKey(number)).toEqual('phone:' + number + ':blocks');
     });
+
+    it('returns the past buddies key for the passed number', function() {
+      expect(Store.pastBuddiesKey(number)).toEqual('phone:' + number + ':buddys');
+    });
   });
 
   describe('queries', function() {
@@ -58,6 +62,13 @@ describe('Store', function() {
       it('calls the passed callback with the results', function() {
         store.getBuddiesWaiting(callback);
         expect(callback).toHaveBeenCalledWith(results);
+      });
+    });
+
+    describe('#addBuddyToPastBuddies', function() {
+      it('pushs the buddy onto the past buddys for the person', function() {
+        store.addBuddyToPastBuddies(buddy1, buddy2, callback);
+        expect(store.run).toHaveBeenCalledWith('rpush', [Store.pastBuddiesKey(buddy1), buddy2], jasmine.any(Function));
       });
     });
 

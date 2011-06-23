@@ -1,8 +1,11 @@
-Store = function() {
+Store = function(client) {
   return {
     run: function(method, params, callback) {
-      params.push(callback);
-      client[method].apply(null, params);
+      var modifiedCallback = function(error, result) {
+        callback(result);
+      };
+      params.push(modifiedCallback);
+      client[method].apply(client, params);
     },
 
     getBlocks: function(buddy, callback) {
@@ -27,6 +30,10 @@ Store = function() {
 
     addBuddyWaiting: function(buddy, callback) {
       this.run('rpush', ['buddies', buddy], callback);
+    },
+
+    addBuddyToPastBuddies: function(person, buddy, callback) {
+      this.run('rpush', [Store.pastBuddiesKey(person), buddy], callback);
     },
 
     setBuddies: function(buddy1, buddy2, callback) {
@@ -54,3 +61,8 @@ Store.buddyKey = function(number) {
 Store.blocksKey = function(number) {
   return 'phone:' + number + ':blocks';
 };
+
+Store.pastBuddiesKey = function(number) {
+  return 'phone:' + number + ':buddys';
+};
+

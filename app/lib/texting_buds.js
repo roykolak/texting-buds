@@ -26,12 +26,23 @@ TextingBuds = function(sender, store) {
       store.getAssignedBuddy(person, function(buddy) {
         if(buddy !== null) {
           store.unsetBuddies(person, buddy, function() {
-            sender.rejectionSms(buddy);
+            store.addBuddyToPastBuddies(person, buddy, function() {
+              sender.rejectionSms(buddy);
+            });
           });
         }
         store.getBuddiesWaiting(function(buddies) {
           if(buddies.length === 0) {
-            sender.emptyQueueSms(person);
+            store.addBuddyWaiting(person, function() {
+              sender.emptyQueueSms(person);
+            });
+          } else {
+            store.popBuddyWaiting(function(buddy) {
+              store.setBuddies(person, buddy, function() {
+                sender.meetYourNewBuddySms(person);
+                sender.meetYourNewBuddySms(buddy);
+              });
+            });
           }
         });
       });
@@ -43,8 +54,10 @@ TextingBuds = function(sender, store) {
           sender.unassignedBuddySms(person);
         } else {
           store.unsetBuddies(person, buddy, function() {
-            sender.goodbyeSms(person);
-            sender.rejectionSms(buddy);
+            store.addBuddyToPastBuddies(person, buddy, function() {
+              sender.goodbyeSms(person);
+              sender.rejectionSms(buddy);
+            });
           });
         }
       });
@@ -64,8 +77,10 @@ TextingBuds = function(sender, store) {
           sender.unassignedBuddySms(person);
         } else {
           store.unsetBuddies(person, buddy, function() {
-            sender.blockerSms(person);
-            sender.blockeeSms(buddy);
+            store.addBuddyToPastBuddies(person, buddy, function() {
+              sender.blockerSms(person);
+              sender.blockeeSms(buddy);
+            });
           });
         }
       });
