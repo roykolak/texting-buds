@@ -1,158 +1,148 @@
 <!DOCTYPE HTML>
 <html lang="en">
   <head>
-    <link href='http://fonts.googleapis.com/css?family=Cabin+Sketch:bold' rel='stylesheet' type='text/css'>
+    <link href='http://fonts.googleapis.com/css?family=Walter+Turncoat&v1' rel='stylesheet' type='text/css'>
     <style>
-      .clearfix:after {
-        visibility: hidden;
-        display: block;
-        font-size: 0;
-        content: " ";
-        clear: both;
-        height: 0;
-        }
-      .clearfix { display: inline-table; }
-      /* Hides from IE-mac \*/
-      * html .clearfix { height: 1%; }
-      .clearfix { display: block; }
-      /* End hide from IE-mac */
+      body {
+        padding:0;
+        margin:0;
+        font-family:'Georgia';
+      }
 
-      body { font-family:'Georgia'; }
+      header {
+        background:#FFF;
+        width:100%;
+      }
       .frame {
-        text-align:justify;
-        width:400px;
-        margin:30px auto 0px;
-        background:#EEE;
-        padding:30px 50px;
-        border-top:1px solid #DDD;
-        box-shadow:0px 10px 10px #555;
-      }
-      h1, h2, h3 { font-family:'Cabin Sketch'; }
-      h1, h2, h3, h4 { margin:0; }
-      h1 {
-        font-size:70px;
-      }
-      h2 {
-        font-size:30px;
-      }
-      h3 {
-        font-size:25px;
-      }
-      h4 {
-        font-size:20px;
-      }
-      p {
-        margin-top:0;
-      }
-      .phone {
-        font-size:60px;
-        color:blue;
-        text-shadow:0px 0px 3px #888;
-      }
-      .divide {
-        border-top:2px solid #444;
-        padding-top:20px;
-        margin-top:20px;
-      }
-      .wrapper {
         width:500px;
-        margin:auto;
+        margin:0 auto 0;
+        padding:0;
       }
-      .commands {
-        width:398px;
-        margin:auto;
+      .shadow { text-shadow:0px 0px 10px #999; }
+      h1, h2, h3, h4, dt, .brand { font-family:'Walter Turncoat'; }
+      h1, h2, h3, h4 {
+        text-align:center;
+        margin:0;
+        color:#333;
+      }
+      h1 { font-size:67px; }
+      h2 { font-size:33px; }
+      h3 { font-size:25px; }
+      h4 { font-size:30px; }
+      p {
+        margin:10px 20px 20px;
+        font-size:17px;
+        line-height:25px;
+      }
+      ol, ul {
+        margin:0;
+        padding:0;
+      }
+      li {
+        list-style-type:none;
+        margin:0;
+      }
+      dl { padding:0 20px; }
+      dt, dd { display:inline-block; }
+      dt {
+        font-size:30px;
+        width:120px;
+        vertical-align:top;
       }
       dd {
+        width:325px;
+        padding:10px 0 20px;
         margin:0;
-        text-align:left;
-      }
-      dt {
-        font-size:20px;
-        color:green;
-      }
-      dt, dd { padding:0 10px 10px; }
-      dl { margin-top:10px; }
-      ul {
-        margin:20px -30px -30px -30px;
-        padding:0;
-        float:left;
-        border-left:2px dashed #555;
-      }
-      ul li {
-        vertical-align:top;
-        height:140px;
-        border-right:2px dashed #555;
-        text-align:left;
-        width:97px;
-        float:left;
-        list-style-type:none;
-        background:#EEE;
-      }
-      ul li, .spacer {
-        box-shadow:0px 10px 10px #555;
-      }
-      ul li.ripped {
-        height:5px;
-      }
-      .spacer {
-        float:left;
-        width:50px;
-        height:140px;
-        background:#EEE;
       }
 
-      footer {
-        width:500px;
-        font-family:arial;
-        margin:50px auto;
-        font-size:12px;
+      .num {
+        display:inline-block;
+        width:110px;
+        font-size:130px;
+        display:inline-block;
       }
-    </style>
+      .details {
+        display:inline-block;
+        width:380px;
+      }
+      .details .title { text-align:left; }
+      .details .description { margin:0; }
+      .phone_number {
+        font-size:60px;
+        color:#000;
+      }
+      .section {
+        padding:40px 0;
+        border-bottom:3px double #CCC;
+      }
+   </style>
   </head>
   <body>
     <div class="frame">
-      <header>
-        <h1>Texting Buds</h1>
-        <h2>Find a random texting buddy.</h2>
-      </header>
       <div class="page">
-        <p>Good news, life isn't that important. Text w/ a random buddy. Standard texting rates apply, but you already knew that.</p>
-        <div class="divide"></div>
-        <h3>Send a text message to this number:</h3>
-        <h2 class="phone">630-599-8662</h2>
-        <p>And you'll be connected to someone who is looking for a random texting buddy just like you.</p>
-        <div class="divide"></div>
-        <h4>Use the commands below...</h4>
+        <div class="section">
+          <h1 class="shadow">Texting Buddies</h1>
+          <h2>Find a random texting buddy</h2>
+          <p>Good news, life isn't that important. Text w/ a random buddy. <em>Standard texting rates apply, but you already knew that.</em></p>
+        </div>
+        <div class="section">
+          <h3>Send a text message to this number</h3>
+          <h2 class="shadow phone_number">630-599-8662</h2>
+          <p>And you'll be connected to someone who is looking for a random texting buddy just like you.</p>
+        </div>
+        <div class="section">
+          <h2>Send these commands by SMS</h2>
+          <dl>
+            <dt class="shadow">#next</dt>
+            <dd>Finds you a text buddy. If there are no buddies available at the moment, you'll be added to the queue.</dd>
+            <dt class="shadow">#stop</dt>
+            <dd>Instantly stop all buddy chatting and end your interactions with TextingBuds.</dd>
+            <dt class="shadow">#block</dt>
+            <dd>Use this to block your buddy if they are spamming you or being a jerk.</dd>
+            <dt class="shadow">#help</dt>
+            <dd>Get all the commands available with their descriptions.</dd>
+          </dl>
+        </div>
+        <div class="section">
+          <h2>Keep three things in mind</h2>
+          <ol class="points">
+            <li class="point">
+              <h3 class="num shadow">1</h3>
+              <div class="details">
+                <h3 class="title">3 blocks and you're banned</h3>
+                <p class="description">If you are blocked 3 times, you will be banned from Texting Buddies. This is to make sure the buddies to text with are nice people.</p>
+              </div>
+            </li>
+            <li class="point">
+              <h3 class="num shadow">2</h3>
+              <div class="details">
+                <h3 class="title">Stop at any time</h3>
+                <p class="description">Just send <span class="brand">#stop</span> and you will stop receiving all text messages from buddies. It's easy to start and even easier to quit.</p>
+              </div>
+            </li>
+            <li class="point">
+              <h3 class="num shadow">3</h3>
+              <div class="details">
+                <h3 class="title">Completely anonymous</h3>
+                <p class="description">Your phone number is never exposed. All texting happens through the Texting Buddies number, <span class="brand">630-599-8662</span>. Be nice and random.</p>
+              </div>
+            </li>
+          </ol>
+        </div>
+        <div class="section">
+          <h2>What exactly is stored here?</h2>
+          <p>Your phone number is the only personal information that is stored. Your phone number is the bare minimium that needs to be stored in order for this project to work.</p>
+          <p>Your phone number will never, ever be shared.</p>
+          <p>The conversations between buddies are not stored. Those conversations are personal to you and buddies.</p>
+        </div>
+        <div class="section">
+          <footer>
+            <p>
+              Good time experiment by <a href="http://royhere.com">Roy Kolak</a> using <a href="http://www.nodejs.org">Node</a>, <a href="http://www.redis.io">Redis</a>, and <a href="http://www.twilio.com">Twilio</a>.
+            </p>
+          </footer>
+        </div>
       </div>
     </div>
-    <div class="wrapper">
-      <div class="spacer"></div>
-      <ul class="commands">
-        <li>
-          <dl>
-            <dt>#start</dt>
-            <dd>Finds you a text bud</dd>
-          </dl>
-        </li>
-        <li>
-          <dl>
-            <dt>#stop</dt>
-            <dd>ends your current text bud</dd>
-          </dl>
-        </li>
-        <li>
-          <dl>
-            <dt>#help</dt>
-            <dd>Get this menu</dd>
-          </dl>
-        </li>
-        <li class="ripped"></li>
-      </ul>
-      <div class="spacer"></div>
-      <div class="clearfix"></div>
-    </div>
-    <footer>
-      Good time experiment by <a href="http://royhere.com">Roy Kolak</a> using <a href="http://www.nodejs.org">Node</a>, <a href="http://www.redis.io">Redis</a>, and <a href="http://www.twilio.com">Twilio</a>.
-    </footer>
   </body>
 </html>
