@@ -114,10 +114,12 @@ TextingBuds = function(sender, store) {
         if(buddy === null) {
           sender.unassignedBuddySms(person);
         } else {
-          store.unsetBuddies(person, buddy, function() {
-            store.addBuddyToPastBuddies(person, buddy, function() {
-              sender.blockerSms(person);
-              sender.blockeeSms(buddy);
+          store.blockBuddy(buddy, function() {
+            store.unsetBuddies(person, buddy, function() {
+              store.addBuddyToPastBuddies(person, buddy, function() {
+                sender.blockerSms(person);
+                sender.blockeeSms(buddy);
+              });
             });
           });
         }

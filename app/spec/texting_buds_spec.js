@@ -227,6 +227,7 @@ describe('TextingBuds', function() {
         buddy = '444-333-222';
         spyOn(sender, 'blockerSms');
         spyOn(sender, 'blockeeSms');
+        stubbedQuery('blockBuddy', true);
         stubbedQuery('getAssignedBuddy', buddy);
         stubbedQuery('unsetBuddies', true);
         stubbedQuery('addBuddyToPastBuddies', true);
