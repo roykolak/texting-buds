@@ -30,7 +30,19 @@ TextingBuds = function(sender, store) {
             self.next(person);
           } else if(body.match(/#block/)) {
             self.block(person);
+          } else {
+            self.relay(person, body);
           }
+        }
+      });
+    },
+
+    relay: function(person, message) {
+      store.getAssignedBuddy(person, function(buddy) {
+        if(buddy) {
+          sender.send(buddy, message);
+        } else {
+          sender.unassignedBuddySms(person);
         }
       });
     },

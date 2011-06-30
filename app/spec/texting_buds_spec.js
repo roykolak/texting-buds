@@ -73,6 +73,48 @@ describe('TextingBuds', function() {
           expect(textingBuds.block).toHaveBeenCalledWith(person);
         });
       });
+
+      describe('When the message doesn\'t contain a command', function() {
+        it('calls to relay', function() {
+          var body = 'This is a message';
+          spyOn(textingBuds, 'relay');
+          textingBuds.route(message(person, body));
+          expect(textingBuds.relay).toHaveBeenCalledWith(person, body);
+        });
+      });
+    });
+  });
+
+  describe('#relay', function() {
+    var buddy, message;
+
+    beforeEach(function() {
+      buddy = '333-777-9999';
+      message = 'This is the message';
+    });
+
+    describe('When the person has a buddy', function() {
+      beforeEach(function() {
+        spyOn(sender, 'send');
+        stubbedQuery('getAssignedBuddy', buddy);
+      });
+
+      it('relays the message to the person\'s buddy', function() {
+        textingBuds.relay(person, message);
+        expect(sender.send).toHaveBeenCalledWith(buddy, message);
+      });
+    });
+
+    describe('When the person does not have a buddy', function() {
+      beforeEach(function() {
+        spyOn(sender, 'unassignedBuddySms');
+        stubbedQuery('getAssignedBuddy', null);
+      });
+
+      it('sends the unassigned buddy SMS to the person', function() {
+        textingBuds.relay(person, message);
+        expect(sender.unassignedBuddySms).toHaveBeenCalledWith(person);
+      });
     });
   });
 
