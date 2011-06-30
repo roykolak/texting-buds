@@ -65,7 +65,7 @@ TextingBuds = function(sender, store) {
             if(buddies.indexOf(person) != -1) {
               sender.waitingForBuddySms(person);
             } else {
-              store.getPastBuddies(function(pastBuddies) {
+              store.getPastBuddies(person, function(pastBuddies) {
                 var newBuddy = findNewBuddy(pastBuddies, buddies);
                 if(newBuddy) {
                   store.removeBuddyWaiting(newBuddy, function(buddy) {

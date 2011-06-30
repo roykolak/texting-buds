@@ -38,6 +38,7 @@ Store = function(client) {
 
     addBuddyToPastBuddies: function(person, buddy, callback) {
       this.run('rpush', [Store.pastBuddiesKey(person), buddy], callback);
+      this.run('rpush', [Store.pastBuddiesKey(buddy), person], callback);
     },
 
     setBuddies: function(buddy1, buddy2, callback) {
@@ -59,14 +60,14 @@ Store = function(client) {
 };
 
 Store.buddyKey = function(number) {
-  return 'phone:' + number + ':buddy';
+  return 'person:' + number + ':buddy';
 };
 
 Store.blocksKey = function(number) {
-  return 'phone:' + number + ':blocks';
+  return 'person:' + number + ':blocks';
 };
 
 Store.pastBuddiesKey = function(number) {
-  return 'phone:' + number + ':buddys';
+  return 'person:' + number + ':buddys';
 };
 

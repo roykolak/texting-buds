@@ -15,15 +15,15 @@ describe('Store', function() {
     });
 
     it('returns the buddy key for the passed number', function() {
-      expect(Store.buddyKey(number)).toEqual('phone:' + number + ':buddy');
+      expect(Store.buddyKey(number)).toEqual('person:' + number + ':buddy');
     });
 
     it('returns the blocks key for the passed number', function() {
-      expect(Store.blocksKey(number)).toEqual('phone:' + number + ':blocks');
+      expect(Store.blocksKey(number)).toEqual('person:' + number + ':blocks');
     });
 
     it('returns the past buddies key for the passed number', function() {
-      expect(Store.pastBuddiesKey(number)).toEqual('phone:' + number + ':buddys');
+      expect(Store.pastBuddiesKey(number)).toEqual('person:' + number + ':buddys');
     });
   });
 
@@ -75,7 +75,12 @@ describe('Store', function() {
     describe('#addBuddyToPastBuddies', function() {
       it('pushs the buddy onto the past buddys for the person', function() {
         store.addBuddyToPastBuddies(buddy1, buddy2, callback);
-        expect(store.run).toHaveBeenCalledWith('rpush', [Store.pastBuddiesKey(buddy1), buddy2], jasmine.any(Function));
+        expect(store.run.argsForCall[0]).toEqual(['rpush', [Store.pastBuddiesKey(buddy1), buddy2], jasmine.any(Function)]);
+      });
+
+      it('pushs the person onto the past buddys for the buddy', function() {
+        store.addBuddyToPastBuddies(buddy1, buddy2, callback);
+        expect(store.run.argsForCall[1]).toEqual(['rpush', [Store.pastBuddiesKey(buddy2), buddy1], jasmine.any(Function)]);
       });
     });
 
