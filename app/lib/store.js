@@ -24,12 +24,16 @@ Store = function(client) {
       this.run('lrange', ['buddies', 0, -1], callback);
     },
 
-    popBuddyWaiting: function(callback) {
-      this.run('lpop', ['buddies'], callback);
+    removeBuddyWaiting: function(buddy, callback) {
+      this.run('lrem', ['buddies', buddy], callback);
     },
 
     addBuddyWaiting: function(buddy, callback) {
       this.run('rpush', ['buddies', buddy], callback);
+    },
+
+    getPastBuddies: function(person, callback) {
+      this.run('lrange', [Store.pastBuddiesKey(person), 0 , -1], callback);
     },
 
     addBuddyToPastBuddies: function(person, buddy, callback) {

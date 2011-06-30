@@ -81,11 +81,4 @@ describe('Sender', function() {
       expect(sender.send).toHaveBeenCalledWith(number, sender.messages.blockee);
     });
   });
-
-  describe('#emptyQueueSms', function() {
-    it('sends the "empty queue" SMS to the number passed', function() {
-      sender.emptyQueueSms(number);
-      expect(sender.send).toHaveBeenCalledWith(number, sender.messages.emptyQueue);
-    });
-  });
 });

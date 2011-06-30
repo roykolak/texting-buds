@@ -1,3 +1,0 @@
-
-textingBuds = new TextingBuds();
-

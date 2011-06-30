@@ -1,4 +1,17 @@
 TextingBuds = function(sender, store) {
+
+  function findNewBuddy(pastBuddies, buddies) {
+    var foundBuddy;
+    buddies.forEach(function(buddy) {
+      if(!foundBuddy) {
+        if(pastBuddies.indexOf(buddy) == -1) {
+          foundBuddy = buddy;
+        }
+      }
+    });
+    return foundBuddy;
+  }
+
   return {
     route: function(params) {
       var person = params.From;
@@ -34,15 +47,28 @@ TextingBuds = function(sender, store) {
         store.getBuddiesWaiting(function(buddies) {
           if(buddies.length === 0) {
             store.addBuddyWaiting(person, function() {
-              sender.emptyQueueSms(person);
+              sender.waitingForBuddySms(person);
             });
           } else {
-            store.popBuddyWaiting(function(buddy) {
-              store.setBuddies(person, buddy, function() {
-                sender.meetYourNewBuddySms(person);
-                sender.meetYourNewBuddySms(buddy);
+            if(buddies.indexOf(person) != -1) {
+              sender.waitingForBuddySms(person);
+            } else {
+              store.getPastBuddies(function(pastBuddies) {
+                var newBuddy = findNewBuddy(pastBuddies, buddies);
+                if(newBuddy) {
+                  store.removeBuddyWaiting(newBuddy, function(buddy) {
+                    store.setBuddies(person, buddy, function() {
+                      sender.meetYourNewBuddySms(person);
+                      sender.meetYourNewBuddySms(newBuddy);
+                    });
+                  });
+                } else {
+                  store.addBuddyWaiting(person, function() {
+                    sender.waitingForBuddySms(person);
+                  });
+                }
               });
-            });
+            }
           }
         });
       });

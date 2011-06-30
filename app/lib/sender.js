@@ -39,21 +39,16 @@ Sender = function(client) {
       this.send(number, this.messages.blockee);
     },
 
-    emptyQueueSms: function(number) {
-      this.send(number, this.messages.emptyQueue);
-    },
-
     messages: {
       unassignedBuddy: "Text #next to get a random buddy.",
-      waitingForBuddy: "I'm tracking down a random buddy for you, I'll let you know when I found one.",
-      meetYourNewBuddy: "Meet your new texting buddy! Start texting by replying to this message. Text #stop to end it.",
-      emptyQueue: "no buddies right, now",
+      waitingForBuddy: "Tracking down a random buddy for you, you'll be texted when one is found.",
+      meetYourNewBuddy: "Meet your new texting buddy! Start texting by replying to this message.",
       rejection: "Looks like your buddy wanted to stop chatting. Text #next for a new buddy.",
       help: "this is the help message",
-      goodbye: "No more buddies for you. Text #next to start again",
-      blocker: "Sorry that you had a bad experience.",
-      blockee: "You have been blocked",
-      banned: "You are banned, sorry"
+      goodbye: "Sorry to see you go. If you ever want to start again, text #next.",
+      blocker: "Thanks for blocking bad buddies, you are helping make this experience better! Text #next for a new buddy.",
+      blockee: "You have been blocked, Make sure you are being a good buddy. Text #next for a new buddy",
+      banned: "You are banned."
     }
   };
-}
+};

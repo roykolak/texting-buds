@@ -65,6 +65,13 @@ describe('Store', function() {
       });
     });
 
+    describe('#getPastBuddies', function() {
+      it('returns all the person\'s past buddies', function() {
+        store.getPastBuddies(buddy1, callback);
+        expect(store.run).toHaveBeenCalledWith('lrange', [Store.pastBuddiesKey(buddy1), 0, -1], jasmine.any(Function));
+      });
+    });
+
     describe('#addBuddyToPastBuddies', function() {
       it('pushs the buddy onto the past buddys for the person', function() {
         store.addBuddyToPastBuddies(buddy1, buddy2, callback);
@@ -72,15 +79,10 @@ describe('Store', function() {
       });
     });
 
-    describe('#popBuddyWaiting', function() {
-      it('pops a buddy from the waiting buddies queue', function() {
-        store.popBuddyWaiting(callback);
-        expect(store.run).toHaveBeenCalledWith('lpop', ['buddies'], jasmine.any(Function));
-      });
-
-      it('calls the passed callback with the results', function() {
-        store.popBuddyWaiting(callback);
-        expect(callback).toHaveBeenCalledWith(results);
+    describe('#removeBuddyWaiting', function() {
+      it('removes the buddy passed from the waiting buddies queue', function() {
+        store.removeBuddyWaiting(buddy1, callback);
+        expect(store.run).toHaveBeenCalledWith('lrem', ['buddies', buddy1], jasmine.any(Function));
       });
     });
 
