@@ -25,7 +25,7 @@ Store = function(client) {
     },
 
     removeBuddyWaiting: function(buddy, callback) {
-      this.run('lrem', ['buddies', buddy], callback);
+      this.run('lrem', ['buddies', 0, buddy], callback);
     },
 
     addBuddyWaiting: function(buddy, callback) {

@@ -69,7 +69,7 @@ TextingBuds = function(sender, store) {
                 var newBuddy = findNewBuddy(pastBuddies, buddies);
                 if(newBuddy) {
                   store.removeBuddyWaiting(newBuddy, function(buddy) {
-                    store.setBuddies(person, buddy, function() {
+                    store.setBuddies(person, newBuddy, function() {
                       sender.meetYourNewBuddySms(person);
                       sender.meetYourNewBuddySms(newBuddy);
                     });

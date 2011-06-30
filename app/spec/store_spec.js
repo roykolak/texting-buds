@@ -82,7 +82,7 @@ describe('Store', function() {
     describe('#removeBuddyWaiting', function() {
       it('removes the buddy passed from the waiting buddies queue', function() {
         store.removeBuddyWaiting(buddy1, callback);
-        expect(store.run).toHaveBeenCalledWith('lrem', ['buddies', buddy1], jasmine.any(Function));
+        expect(store.run).toHaveBeenCalledWith('lrem', ['buddies', 0, buddy1], jasmine.any(Function));
       });
     });
 
