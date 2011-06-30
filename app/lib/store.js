@@ -68,6 +68,6 @@ Store.blocksKey = function(number) {
 };
 
 Store.pastBuddiesKey = function(number) {
-  return 'person:' + number + ':buddys';
+  return 'person:' + number + ':buddies';
 };
 

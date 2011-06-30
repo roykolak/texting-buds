@@ -23,7 +23,7 @@ describe('Store', function() {
     });
 
     it('returns the past buddies key for the passed number', function() {
-      expect(Store.pastBuddiesKey(number)).toEqual('person:' + number + ':buddys');
+      expect(Store.pastBuddiesKey(number)).toEqual('person:' + number + ':buddies');
     });
   });
 
