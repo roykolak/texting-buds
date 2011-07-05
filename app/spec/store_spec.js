@@ -14,6 +14,14 @@ describe('Store', function() {
       number = '805-769-8255';
     });
 
+    it('returns the queue key', function() {
+      expect(Store.queueKey()).toEqual('queue');
+    });
+
+    it('returns the active key', function() {
+      expect(Store.activeKey()).toEqual('active');
+    });
+
     it('returns the buddy key for the passed number', function() {
       expect(Store.buddyKey(number)).toEqual('person:' + number + ':buddy');
     });
@@ -53,10 +61,46 @@ describe('Store', function() {
       });
     });
 
+    describe('#getActiveBuddies', function() {
+      it('queries the active buddies', function() {
+        store.getActiveBuddies(callback);
+        expect(store.run).toHaveBeenCalledWith('lrange', [Store.activeKey(), 0, -1], jasmine.any(Function));
+      });
+
+      it('calls the passed callback with the results', function() {
+        store.getActiveBuddies(callback);
+        expect(callback).toHaveBeenCalledWith(results);
+      });
+    });
+
+    describe('#removeActiveBuddy', function() {
+      it('removes the passed buddy from active buddies', function() {
+        store.removeActiveBuddy(buddy1, callback);
+        expect(store.run).toHaveBeenCalledWith('lrem', [Store.activeKey(), 0, buddy1], jasmine.any(Function));
+      });
+
+      it('calls the passed callback with the results', function() {
+        store.removeActiveBuddy(buddy1, callback);
+        expect(callback).toHaveBeenCalledWith(results);
+      });
+    });
+
+    describe('#addActiveBuddy', function() {
+      it('adds the passed buddy to active buddies', function() {
+        store.addActiveBuddy(buddy1, callback);
+        expect(store.run).toHaveBeenCalledWith('lpush', [Store.activeKey(), buddy1], jasmine.any(Function));
+      });
+
+      it('calls the passed callback with the results', function() {
+        store.addActiveBuddy(buddy1, callback);
+        expect(callback).toHaveBeenCalledWith(results);
+      });
+    });
+
     describe('#getBuddiesWaiting', function() {
       it('returns all the buddies in the waiting queue', function() {
         store.getBuddiesWaiting(callback);
-        expect(store.run).toHaveBeenCalledWith('lrange', ['buddies', 0, -1], jasmine.any(Function));
+        expect(store.run).toHaveBeenCalledWith('lrange', [Store.queueKey(), 0, -1], jasmine.any(Function));
       });
 
       it('calls the passed callback with the results', function() {
@@ -87,14 +131,14 @@ describe('Store', function() {
     describe('#removeBuddyWaiting', function() {
       it('removes the buddy passed from the waiting buddies queue', function() {
         store.removeBuddyWaiting(buddy1, callback);
-        expect(store.run).toHaveBeenCalledWith('lrem', ['buddies', 0, buddy1], jasmine.any(Function));
+        expect(store.run).toHaveBeenCalledWith('lrem', [Store.queueKey(), 0, buddy1], jasmine.any(Function));
       });
     });
 
     describe('#addBuddyWaiting', function() {
       it('adds the passed buddy to the waiting buddies queue', function() {
         store.addBuddyWaiting(buddy1, callback);
-        expect(store.run).toHaveBeenCalledWith('rpush', ['buddies', buddy1], jasmine.any(Function));
+        expect(store.run).toHaveBeenCalledWith('rpush', [Store.queueKey(), buddy1], jasmine.any(Function));
       });
 
       it('calls the passed callback with the results', function() {

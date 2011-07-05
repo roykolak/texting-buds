@@ -3,6 +3,9 @@ Sender = function(client) {
     send: function(number, message) {
       client.sendSms(number, message, null, function(){});
     },
+    statusSms: function(number, buddies) {
+      this.send(number, buddies + this.messages.status);
+    },
     bannedSms: function(number) {
       this.send(number, this.messages.banned);
     },
@@ -40,6 +43,7 @@ Sender = function(client) {
     },
 
     messages: {
+      status: " buddies paired at the moment",
       unassignedBuddy: "Text #next to get a random buddy.",
       waitingForBuddy: "Tracking down a random buddy for you, you'll be texted when one is found.",
       meetYourNewBuddy: "Meet your new texting buddy! Start texting by replying to this message.",

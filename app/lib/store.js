@@ -12,6 +12,18 @@ Store = function(client) {
       this.run('get', [Store.blocksKey(buddy)], callback);
     },
 
+    getActiveBuddies: function(callback) {
+      this.run('lrange', [Store.activeKey(), 0, -1], callback);
+    },
+
+    removeActiveBuddy: function(buddy, callback) {
+      this.run('lrem', [Store.activeKey(), 0, buddy], callback);
+    },
+
+    addActiveBuddy: function(buddy, callback) {
+      this.run('lpush', [Store.activeKey(), buddy], callback);
+    },
+
     setBlocks: function(buddy, blocks, callback) {
       this.run('set', [Store.blocksKey(buddy), blocks], callback);
     },
@@ -21,15 +33,15 @@ Store = function(client) {
     },
 
     getBuddiesWaiting: function(callback) {
-      this.run('lrange', ['buddies', 0, -1], callback);
+      this.run('lrange', [Store.queueKey(), 0, -1], callback);
     },
 
     removeBuddyWaiting: function(buddy, callback) {
-      this.run('lrem', ['buddies', 0, buddy], callback);
+      this.run('lrem', [Store.queueKey(), 0, buddy], callback);
     },
 
     addBuddyWaiting: function(buddy, callback) {
-      this.run('rpush', ['buddies', buddy], callback);
+      this.run('rpush', [Store.queueKey(), buddy], callback);
     },
 
     getPastBuddies: function(person, callback) {
@@ -71,3 +83,10 @@ Store.pastBuddiesKey = function(number) {
   return 'person:' + number + ':buddies';
 };
 
+Store.queueKey = function() {
+  return 'queue';
+};
+
+Store.activeKey = function() {
+  return 'active';
+};

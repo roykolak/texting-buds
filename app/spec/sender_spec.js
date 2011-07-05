@@ -19,6 +19,14 @@ describe('Sender', function() {
     });
   });
 
+  describe('#statusSms', function() {
+    it('sends the system status to the number passed', function() {
+      var buddies = 10;
+      sender.statusSms(number, buddies);
+      expect(sender.send).toHaveBeenCalledWith(number, buddies + sender.messages.status);
+    });
+  });
+
   describe('#BannedSms', function() {
     it('sends the "banned" SMS to the number passed', function() {
       sender.bannedSms(number);
