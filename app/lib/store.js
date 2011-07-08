@@ -8,6 +8,28 @@ Store = function(client) {
       client[method].apply(client, params);
     },
 
+    unsetBuddiesProcess: function(person, buddy, callback) {
+      var self = this;
+      self.unsetBuddies(person, buddy, function() {
+        self.addBuddyToPastBuddies(person, buddy, function() {
+          self.removeActiveBuddies(person, buddy, function() {
+            callback();
+          });
+        });
+      });
+    },
+
+    setBuddiesProcess: function(person, buddy, callback) {
+      var self = this;
+      self.removeBuddyWaiting(buddy, function() {
+        self.setBuddies(person, buddy, function() {
+          self.addActiveBuddies(person, buddy, function() {
+            callback();
+          });
+        });
+      });
+    },
+
     getBlocks: function(buddy, callback) {
       this.run('get', [Store.blocksKey(buddy)], callback);
     },
@@ -16,12 +38,16 @@ Store = function(client) {
       this.run('lrange', [Store.activeKey(), 0, -1], callback);
     },
 
-    removeActiveBuddy: function(buddy, callback) {
-      this.run('lrem', [Store.activeKey(), 0, buddy], callback);
+    removeActiveBuddies: function(person, buddy, callback) {
+      this.run('lrem', [Store.activeKey(), 0, person], function() {});
+      this.run('lrem', [Store.activeKey(), 0, buddy], function() {});
+      callback();
     },
 
-    addActiveBuddy: function(buddy, callback) {
-      this.run('lpush', [Store.activeKey(), buddy], callback);
+    addActiveBuddies: function(person, buddy, callback) {
+      this.run('lpush', [Store.activeKey(), person], function() {});
+      this.run('lpush', [Store.activeKey(), buddy], function() {});
+      callback();
     },
 
     setBlocks: function(buddy, blocks, callback) {
@@ -49,8 +75,9 @@ Store = function(client) {
     },
 
     addBuddyToPastBuddies: function(person, buddy, callback) {
-      this.run('rpush', [Store.pastBuddiesKey(person), buddy], callback);
-      this.run('rpush', [Store.pastBuddiesKey(buddy), person], callback);
+      this.run('rpush', [Store.pastBuddiesKey(person), buddy], function() {});
+      this.run('rpush', [Store.pastBuddiesKey(buddy), person], function() {});
+      callback();
     },
 
     setBuddies: function(buddy1, buddy2, callback) {

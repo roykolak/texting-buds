@@ -50,10 +50,8 @@ TextingBuds = function(sender, store) {
     next: function(person) {
       store.getAssignedBuddy(person, function(buddy) {
         if(buddy !== null) {
-          store.unsetBuddies(person, buddy, function() {
-            store.addBuddyToPastBuddies(person, buddy, function() {
-              sender.rejectionSms(buddy);
-            });
+          store.unsetBuddiesProcess(person, buddy, function() {
+            sender.rejectionSms(buddy);
           });
         }
         store.getBuddiesWaiting(function(buddies) {
@@ -68,11 +66,9 @@ TextingBuds = function(sender, store) {
               store.getPastBuddies(person, function(pastBuddies) {
                 var newBuddy = findNewBuddy(pastBuddies, buddies);
                 if(newBuddy) {
-                  store.removeBuddyWaiting(newBuddy, function(buddy) {
-                    store.setBuddies(person, newBuddy, function() {
-                      sender.meetYourNewBuddySms(person);
-                      sender.meetYourNewBuddySms(newBuddy);
-                    });
+                  store.setBuddiesProcess(person, newBuddy, function() {
+                    sender.meetYourNewBuddySms(person);
+                    sender.meetYourNewBuddySms(newBuddy);
                   });
                 } else {
                   store.addBuddyWaiting(person, function() {
@@ -91,11 +87,9 @@ TextingBuds = function(sender, store) {
         if(buddy === null) {
           sender.unassignedBuddySms(person);
         } else {
-          store.unsetBuddies(person, buddy, function() {
-            store.addBuddyToPastBuddies(person, buddy, function() {
-              sender.goodbyeSms(person);
-              sender.rejectionSms(buddy);
-            });
+          store.unsetBuddiesProcess(person, buddy, function() {
+            sender.goodbyeSms(person);
+            sender.rejectionSms(buddy);
           });
         }
       });
@@ -115,11 +109,9 @@ TextingBuds = function(sender, store) {
           sender.unassignedBuddySms(person);
         } else {
           store.blockBuddy(buddy, function() {
-            store.unsetBuddies(person, buddy, function() {
-              store.addBuddyToPastBuddies(person, buddy, function() {
-                sender.blockerSms(person);
-                sender.blockeeSms(buddy);
-              });
+            store.unsetBuddiesProcess(person, buddy, function() {
+              sender.blockerSms(person);
+              sender.blockeeSms(buddy);
             });
           });
         }

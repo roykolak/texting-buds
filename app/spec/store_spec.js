@@ -49,6 +49,56 @@ describe('Store', function() {
       });
     });
 
+    describe('#unsetBuddiesProcess', function() {
+      it('calls to unsetBuddies with the persons', function() {
+        spyOn(store, 'unsetBuddies');
+        store.unsetBuddiesProcess(buddy1, buddy2);
+        expect(store.unsetBuddies).toHaveBeenCalledWith(buddy1, buddy2, jasmine.any(Function));
+      });
+
+      it('calls to addBuddyToPastBuddies with the persons', function() {
+        spyOn(store, 'addBuddyToPastBuddies');
+        store.unsetBuddiesProcess(buddy1, buddy2);
+        expect(store.addBuddyToPastBuddies).toHaveBeenCalledWith(buddy1, buddy2, jasmine.any(Function));
+      });
+
+      it('calls to removeActiveBuddies with the persons', function() {
+        spyOn(store, 'removeActiveBuddies');
+        store.unsetBuddiesProcess(buddy1, buddy2);
+        expect(store.removeActiveBuddies).toHaveBeenCalledWith(buddy1, buddy2, jasmine.any(Function));
+      });
+
+      it('calls the passed callback', function() {
+        store.unsetBuddiesProcess(buddy1, buddy2, callback);
+        expect(callback).toHaveBeenCalled();
+      });
+    });
+
+    describe('#setBuddiesProcess', function() {
+      it('calls to removeBuddyWaiting with the buddy', function() {
+        spyOn(store, 'removeBuddyWaiting');
+        store.setBuddiesProcess(buddy1, buddy2);
+        expect(store.removeBuddyWaiting).toHaveBeenCalledWith(buddy2, jasmine.any(Function));
+      });
+
+      it('calls to setsBuddies with both persons', function() {
+        spyOn(store, 'setBuddies');
+        store.setBuddiesProcess(buddy1, buddy2);
+        expect(store.setBuddies).toHaveBeenCalledWith(buddy1, buddy2, jasmine.any(Function));
+      });
+
+      it('calls to addActiveBuddies', function() {
+        spyOn(store, 'addActiveBuddies');
+        store.setBuddiesProcess(buddy1, buddy2);
+        expect(store.addActiveBuddies).toHaveBeenCalledWith(buddy1, buddy2, jasmine.any(Function));
+      });
+
+      it('calls the passed callback', function() {
+        store.setBuddiesProcess(buddy1, buddy2, callback);
+        expect(callback).toHaveBeenCalled();
+      });
+    });
+
     describe('#getBlocks', function() {
       it('returns the number of blocks the user has', function() {
         store.getBlocks(buddy1, callback);
@@ -73,27 +123,37 @@ describe('Store', function() {
       });
     });
 
-    describe('#removeActiveBuddy', function() {
+    describe('#removeActiveBuddies', function() {
+      it('removes the passed person from active buddies', function() {
+        store.removeActiveBuddies(buddy1, buddy2, callback);
+        expect(store.run.argsForCall[0]).toEqual(['lrem', [Store.activeKey(), 0, buddy1], jasmine.any(Function)]);
+      });
+
       it('removes the passed buddy from active buddies', function() {
-        store.removeActiveBuddy(buddy1, callback);
-        expect(store.run).toHaveBeenCalledWith('lrem', [Store.activeKey(), 0, buddy1], jasmine.any(Function));
+        store.removeActiveBuddies(buddy1, buddy2, callback);
+        expect(store.run.argsForCall[1]).toEqual(['lrem', [Store.activeKey(), 0, buddy2], jasmine.any(Function)]);
       });
 
       it('calls the passed callback with the results', function() {
-        store.removeActiveBuddy(buddy1, callback);
-        expect(callback).toHaveBeenCalledWith(results);
+        store.removeActiveBuddies(buddy1, buddy2, callback);
+        expect(callback).toHaveBeenCalled();
       });
     });
 
-    describe('#addActiveBuddy', function() {
+    describe('#addActiveBuddies', function() {
+      it('adds the passed person to active buddies', function() {
+        store.addActiveBuddies(buddy1, buddy2, callback);
+        expect(store.run.argsForCall[0]).toEqual(['lpush', [Store.activeKey(), buddy1], jasmine.any(Function)]);
+      });
+
       it('adds the passed buddy to active buddies', function() {
-        store.addActiveBuddy(buddy1, callback);
-        expect(store.run).toHaveBeenCalledWith('lpush', [Store.activeKey(), buddy1], jasmine.any(Function));
+        store.addActiveBuddies(buddy1, buddy2, callback);
+        expect(store.run.argsForCall[1]).toEqual(['lpush', [Store.activeKey(), buddy2], jasmine.any(Function)]);
       });
 
       it('calls the passed callback with the results', function() {
-        store.addActiveBuddy(buddy1, callback);
-        expect(callback).toHaveBeenCalledWith(results);
+        store.addActiveBuddies(buddy1, buddy2, callback);
+        expect(callback).toHaveBeenCalledWith();
       });
     });
 

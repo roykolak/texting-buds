@@ -130,10 +130,14 @@ describe('TextingBuds', function() {
       beforeEach(function() {
         buddy = '222-333-4444';
         stubbedQuery('getAssignedBuddy', buddy);
-        stubbedQuery('unsetBuddies', true);
         stubbedQuery('addBuddyWaiting', true);
         stubbedQuery('getBuddiesWaiting', []);
-        stubbedQuery('addBuddyToPastBuddies', true);
+        stubbedQuery('unsetBuddiesProcess', true);
+      });
+
+      it('calls to unsetBuddiesProcess with both persons', function() {
+        textingBuds.next(person);
+        expect(store.unsetBuddiesProcess).toHaveBeenCalledWith(person, buddy, jasmine.any(Function));
       });
 
       it('sends the rejection SMS to their buddy', function() {
@@ -194,8 +198,12 @@ describe('TextingBuds', function() {
 
           spyOn(sender, 'meetYourNewBuddySms');
           stubbedQuery('getBuddiesWaiting', [buddy, newBuddy, anotherNewBuddy]);
-          stubbedQuery('removeBuddyWaiting', buddy);
-          stubbedQuery('setBuddies', true);
+          stubbedQuery('setBuddiesProcess', true);
+        });
+
+        it('calls to setBuddiesProcess with both persons', function() {
+          textingBuds.next(person);
+          expect(store.setBuddiesProcess).toHaveBeenCalledWith(person, newBuddy, jasmine.any(Function));
         });
 
         it('sends the meet your new buddy SMS to both parties', function() {
@@ -229,8 +237,12 @@ describe('TextingBuds', function() {
         spyOn(sender, 'blockeeSms');
         stubbedQuery('blockBuddy', true);
         stubbedQuery('getAssignedBuddy', buddy);
-        stubbedQuery('unsetBuddies', true);
-        stubbedQuery('addBuddyToPastBuddies', true);
+        stubbedQuery('unsetBuddiesProcess', true);
+      });
+
+      it('calls unsetBuddiesProcess with both persons', function() {
+        textingBuds.block(person);
+        expect(store.unsetBuddiesProcess).toHaveBeenCalledWith(person, buddy, jasmine.any(Function));
       });
 
       it('sends the blocker SMS to the person', function() {
@@ -282,8 +294,12 @@ describe('TextingBuds', function() {
         spyOn(sender, 'rejectionSms');
         spyOn(sender, 'goodbyeSms');
         stubbedQuery('getAssignedBuddy', buddy);
-        stubbedQuery('unsetBuddies', true);
-        stubbedQuery('addBuddyToPastBuddies', true);
+        stubbedQuery('unsetBuddiesProcess', true);
+      });
+
+      it('calls to unsetBuddiesProcess with both persons', function() {
+        textingBuds.stop(person);
+        expect(store.unsetBuddiesProcess).toHaveBeenCalledWith(person, buddy, jasmine.any(Function));
       });
 
       it('sends the goodbye SMS to the person', function() {
