@@ -44,7 +44,7 @@ Sender = function(client) {
 
     messages: {
       status: " buddies paired at the moment",
-      unassignedBuddy: "Text #next to get a random buddy.",
+      unassignedBuddy: "Text #next to get a random buddy. Make sure to checkout textingbuds.com for all the rules and info!",
       waitingForBuddy: "Tracking down a random buddy for you, you'll be texted when one is found.",
       meetYourNewBuddy: "Meet your new texting buddy! Start texting by replying to this message.",
       rejection: "Looks like your buddy wanted to stop chatting. Text #next for a new buddy.",
