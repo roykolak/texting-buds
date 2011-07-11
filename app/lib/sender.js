@@ -43,16 +43,16 @@ Sender = function(client) {
     },
 
     messages: {
-      status: " buddies paired at the moment",
+      status: " buddies paired at the moment.",
       unassignedBuddy: "Text #next to get a random buddy. Make sure to checkout textingbuds.com for all the rules and info!",
       waitingForBuddy: "Tracking down a random buddy for you, you'll be texted when one is found.",
       meetYourNewBuddy: "Meet your new texting buddy! Start texting by replying to this message.",
       rejection: "Looks like your buddy wanted to stop chatting. Text #next for a new buddy.",
-      help: "this is the help message",
+      help: "#next for a new buddy, #block to block a buddy, #stop to end a conversation, #help this message.",
       goodbye: "Sorry to see you go. If you ever want to start again, text #next.",
       blocker: "Thanks for blocking bad buddies, you are helping make this experience better! Text #next for a new buddy.",
-      blockee: "You have been blocked, Make sure you are being a good buddy. Text #next for a new buddy",
-      banned: "You are banned."
+      blockee: "You have been blocked, Make sure you are being a good buddy. Text #next for a new buddy.",
+      banned: "You have been banned from Textingbuds because three buddies blocked you. Sorry friend."
     }
   };
 };
