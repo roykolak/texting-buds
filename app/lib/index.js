@@ -1,26 +1,23 @@
 require('./sender');
 require('./store');
 require('./texting_buds');
+require('./settings');
 
 var sys = require('sys'),
-    TwilioClient = require('twilio').Client;
+    TwilioClient = require('twilio').Client,
+    redis = require('redis').createClient();
 
-var apiKey = 'AC817a0bff576c4274fd12710cee1ef6b9',
-    authKey = '8849668d090659eb027ec07c93d89d2d',
-    phone = '+16305998662',
-    dev = { port: 9092, host: '67.175.132.120' },
-    prod = { port: 3000, host: 'textingbuds.com' };
+var settings = new Settings('dev');
 
-twilioClient = new TwilioClient(apiKey, authKey, dev.host, { port:dev.port, basePath:'/sms'});
-phone = twilioClient.getPhoneNumber(phone);
+var twilioClient = new TwilioClient(settings.apiKey, settings.authKey, settings.host, { port:settings.port, basePath:'/sms'}),
+    twilio = twilioClient.getPhoneNumber(settings.phone);
 
-var redis = require('redis'),
-    client = redis.createClient();
+redis.select(1, function() {
+  var textingBuds = new TextingBuds(new Sender(twilio), new Store(redis));
 
-var textingBuds = new TextingBuds(new Sender(phone), new Store(client));
-
-phone.setup(function() {
-  phone.on('incomingSms', function(params, res) {
-    textingBuds.route(params);
+  twilio.setup(function() {
+    twilio.on('incomingSms', function(params, res) {
+      textingBuds.route(params);
+    });
   });
 });
