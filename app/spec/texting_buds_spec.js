@@ -42,6 +42,14 @@ describe('TextingBuds', function() {
         stubbedQuery('getBlocks', 1);
       });
 
+      describe('When the message contains #status', function() {
+        it('calls to status', function() {
+          spyOn(textingBuds, 'status');
+          textingBuds.route(message(person, '#status'));
+          expect(textingBuds.status).toHaveBeenCalledWith(person);
+        });
+      });
+
       describe('When the message contains #help', function() {
         it('calls to help', function() {
           spyOn(textingBuds, 'help');
@@ -115,6 +123,21 @@ describe('TextingBuds', function() {
         textingBuds.relay(person, message);
         expect(sender.unassignedBuddySms).toHaveBeenCalledWith(person);
       });
+    });
+  });
+
+  describe('#status', function() {
+    var activeBuddies;
+
+    beforeEach(function() {
+      activeBuddies = ['345-444-555', '543-456-3456'];
+      spyOn(sender, 'statusSms');
+      stubbedQuery('getActiveBuddies', activeBuddies);
+    });
+
+    it('sends the status SMS to the person', function() {
+      textingBuds.status(person);
+      expect(sender.statusSms).toHaveBeenCalledWith(person, activeBuddies.length);
     });
   });
 

@@ -24,6 +24,8 @@ TextingBuds = function(sender, store) {
         } else {
           if(body.match(/#help/)) {
             self.help(person);
+          } else if(body.match(/#status/)) {
+            self.status(person);
           } else if(body.match(/#stop/)) {
             self.stop(person);
           } else if(body.match(/#next/)) {
@@ -44,6 +46,12 @@ TextingBuds = function(sender, store) {
         } else {
           sender.unassignedBuddySms(person);
         }
+      });
+    },
+
+    status: function(person) {
+      store.getActiveBuddies(function(activeBuddies) {
+        sender.statusSms(person, activeBuddies.length);
       });
     },
 
