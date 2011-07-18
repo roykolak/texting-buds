@@ -73,13 +73,35 @@
         padding:40px 0;
         border-bottom:3px double #CCC;
       }
+      .section:first-child { padding-top:10px; }
+      .share {
+        position:fixed;
+        width:480px;
+        background:#EEE;
+        padding:5px 10px;
+        border-bottom:1px solid #CCC;
+      }
+      .share li {
+        padding:0 10px;
+        display: inline-block;
+      }
     </style>
   </head>
   <body>
     <div class="frame">
       <div class="page">
+        <ul class="share">
+          <li>
+            <a href="http://twitter.com/share" class="twitter-share-button" data-text="Want a random texting buddy? Check this out! #textingbuddies" data-count="none">Tweet</a><script type="text/javascript" src="http://platform.twitter.com/widgets.js"></script>
+          </li>
+          <li>
+            <g:plusone></g:plusone>
+          </li>
+          <li>
+            <script type="text/javascript" src="http://www.reddit.com/static/button/button1.js"></script>
+          </li>
+        </ul>
         <div class="section">
-          <g:plusone></g:plusone>
           <h1 class="shadow">Texting Buddies</h1>
           <h2>Find a random texting buddy</h2>
           <p>Good news, life isn't that important. Text w/ a random buddy. <em>Standard texting rates apply, but you already knew that.</em></p>
